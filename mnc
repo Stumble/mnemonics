@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ $# -gt 0 ]
 then
-    python /home/stumble/learn/vocab/mnemonic.py $1
+    python /home/stumble/learn/vocab/mnemonic.py $1 | less
 else
     echo "input the word! baby!";
 fi
