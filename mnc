@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ $# -gt 0 ]
+then
+    python /home/stumble/learn/vocab/mnemonic.py $1
+else
+    echo "input the word! baby!";
+fi
+
