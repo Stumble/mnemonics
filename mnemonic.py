@@ -3,6 +3,9 @@ from bs4 import BeautifulSoup
 import os
 import sys
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 web_url = 'http://mnemonicdictionary.com/';
 
 query_string = "?word=";
