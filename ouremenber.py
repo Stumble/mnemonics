@@ -7,6 +7,7 @@ import datetime
 def do_remember(word, word_time):
     last_remember = datetime.datetime.fromtimestamp(word_time).strftime('%m-%d %H:%M:%S');
     review_cnt = vcb_db.get_word_review_cnt(word);
+    print("");
     print("---------------------")
     print (">>" +last_remember + "(" + str(review_cnt) + ")" + ":" + word);
     while True:
