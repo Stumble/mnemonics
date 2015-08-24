@@ -23,10 +23,13 @@ def do_remember(word, word_time):
             print ("input error");
 
 
-def active_insert(words_que, to_insert):
+def active_insert(words_que, to_insert, is_hotword = False):
     i = 0;
     for word_t in words_que:
         i += 1;
+        if is_hotword and i >= 15:
+            words_que.insert(i, to_insert);
+            return True;
         if to_insert[1] <= word_t[1]:
             words_que.insert(i, to_insert);
             return True;
@@ -43,11 +46,11 @@ def remember_act(words_que, word):
 def not_remember_act(words_que, word):
     # words_que.append(word);
     word_tuple = vcb_db.not_remember_word(word);
-    active_insert(words_que, word_tuple);
+    active_insert(words_que, word_tuple, True);
     pass;
 
-def review_mode():
-    words_queue = vcb_db.get_need_words_queue();
+def review_mode(lst_num=None):
+    words_queue = vcb_db.get_need_words_queue(lst_num);
     turn_rest = len(words_queue);
     while len(words_queue) > 0 :
 
@@ -85,5 +88,8 @@ if choice == 'r':
     review_mode();
 elif choice == 'i':
     insert_mode();
+elif choice == 'lr':
+    lst_num = raw_input("please input the list id:");
+    review_mode(lst_num);
 else:
     print ("error input");

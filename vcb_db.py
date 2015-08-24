@@ -48,7 +48,10 @@ def group_shuffle(lst):
 
 def get_need_words_queue(thelist=None):
     words_que = [];
-    words = cursor.execute("select *  from words;");
+    if thelist == None:
+        words = cursor.execute("select *  from words;");
+    else:
+        words = cursor.execute("select * from words where list = ?", [thelist]);
     now_time = int(time.time());
     for word in words:
         n_remember = word[1];
