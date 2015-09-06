@@ -14,7 +14,7 @@ conn = sqlite3.connect('vcb_data.db')
 conn.isolation_level = None
 cursor = conn.cursor()
 
-remember_interval = [15, 60, 300, 1800, 12600, 100800, 100800*2, 100800*3, 100800 * 5];
+remember_interval = [15, 300, 12600, 100800, 100800*2, 100800*3, 100800 * 5, 100800 * 7, 100800 * 7];
 remember_max = 8;
 shuffle_group = 7;
 # print("opened");
