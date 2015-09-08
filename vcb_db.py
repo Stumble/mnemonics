@@ -102,7 +102,7 @@ def ban_this_word(word):
 def not_remember_word(word):
     now_time = int(time.time());
     try:
-        cursor.execute("UPDATE words SET review_cnt = max(review_cnt - 3, 0), last_know = ? WHERE word = ?;", [now_time, word]);
+        cursor.execute("UPDATE words SET review_cnt = max(review_cnt - 5, 0), last_know = ? WHERE word = ?;", [now_time, word]);
         cursor.execute("select review_cnt from words where word = ?", [word]);
         review_cnt = cursor.fetchone()[0];
         conn.commit();

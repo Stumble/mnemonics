@@ -17,6 +17,9 @@ def do_remember(word, word_time):
             return True;
         elif is_remember == 'n':
             return False;
+        elif is_remember == 's':
+            mnc.show_mnc(word);
+            continue;
         elif is_remember == 'b':
             vcb_db.ban_this_word(word);
             return True;
