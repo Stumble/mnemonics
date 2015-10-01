@@ -5,12 +5,20 @@ import time
 import mnemonic as mnc
 import datetime
 import os
+import sys
+
+# to use utf-8 decode
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 def show_def(word):
     if vcb_db.is_def_in_db(word):
         chn_def, mnc_def = vcb_db.get_word_def_from_db(word);
         print (word + ":");
-        print (chn_def + mnc_def);
+        # print (chn_def.encode('utf8'));
+        print (chn_def);
+        print (mnc_def);
     else:
         mnc.show_mnc(word);
 
@@ -67,6 +75,14 @@ def not_remember_act(words_que, word):
 
 def review_mode(lst_num=None):
     words_queue = vcb_db.get_need_words_queue(lst_num);
+    do_review(words_queue);
+
+def challenge_mode():
+    words_queue = vcb_db.get_need_words_queue(None,40);
+    do_review(words_queue);
+
+
+def do_review(words_queue):
     turn_rest = len(words_queue);
     while len(words_queue) > 0 :
 
@@ -109,7 +125,7 @@ def update_word_def():
     pass;
 
 # funciton start here
-choice = raw_input("please choose the working mode:\nr:review.\ni:insert\nm:domore\n")
+choice = raw_input("please choose the working mode:\nr:review.\ni:insert\nm:domore\nc:challenge-Mode(40)\n")
 if choice == 'r':
     review_mode();
 elif choice == 'i':
@@ -119,5 +135,7 @@ elif choice == 'lr':
     review_mode(lst_num);
 elif choice == 'update':
     update_word_def();
+elif choice == 'c':
+    challenge_mode();
 else:
     print ("error input");

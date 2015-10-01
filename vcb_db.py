@@ -74,7 +74,7 @@ def get_word_def_from_db(word):
     mnc_def = cursor.execute("select * from mnc where word = ?;", [word]).fetchone()[1];
     return chn_def,mnc_def;
 
-def get_need_words_queue(thelist=None):
+def get_need_words_queue(thelist=None,nGroup=500):
     words_que = [];
     if thelist == None:
         words = cursor.execute("select *  from words;");
@@ -88,6 +88,9 @@ def get_need_words_queue(thelist=None):
             continue;
         if last_know + remember_interval[n_remember] <= now_time:
             words_que.append((word[0], last_know + remember_interval[n_remember]));
+
+        if len(words_que) >= nGroup:
+            break;
 
     rtn_que = sorted(words_que, key = lambda x: x[1]);
 
