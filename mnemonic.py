@@ -73,13 +73,16 @@ def show_mnc(query_word):
 
     for link in soup.findAll('u'):
         if link.string == 'Definition':
-            dict_def = link.next_sibling.next_sibling;
+            pass;
+            # dict_def = link.next_sibling.next_sibling;
             # print ("Def:" + dict_def.strip());
         elif link.string == 'Synonyms':
-            synonyms = link.parent.find_all('a');
-            # map(lambda x: print_string(x, "Synonyms"), synonyms);
+            pass;
+            # synonyms = link.parent.find_all('a');
+            # map(lambda x: print_string(x), synonyms[0:3]);
         elif link.string == 'Example Sentence':
-            examples = link.parent.find_all('li');
+            pass;
+            # examples = link.parent.find_all('li');
             # map(lambda x: print_string(x), examples);
         elif link.string.find('Mnemonics (Memory Aids) for') is not -1:
             print_mnemonics(link.parent.find_all('i','icon-lightbulb'));
