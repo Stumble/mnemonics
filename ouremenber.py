@@ -4,6 +4,7 @@ import vcb_db
 import time
 import mnemonic as mnc
 import datetime
+import os
 
 def do_remember(word, word_time):
     last_remember = datetime.datetime.fromtimestamp(word_time).strftime('%m-%d %H:%M:%S');
@@ -80,6 +81,10 @@ def insert_mode():
     nlist = raw_input("please input the list number: ");
     while True:
         word = raw_input(">>>> input the word:");
+        word = word.strip();
+        if word == '':
+            os.system('clear');
+            continue;
         if word == 'ou':
             break;
         vcb_db.insert_word(word, nlist);
