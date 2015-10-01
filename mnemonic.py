@@ -14,6 +14,7 @@ query_string = "?word=";
 save_dir = "/home/stumble/.mnemonic/"
 
 def chinese_def(word):
+    chn_def_str = "";
     yd_web_url = "http://dict.youdao.com/search?q=";
     path_and_name = save_dir + word + '.yd';
     if os.path.isfile(path_and_name):
@@ -27,7 +28,9 @@ def chinese_def(word):
         return False;
     for trans in trans_div[0].findAll("li"):
         print (trans.string);
-
+        chn_def_str += trans.string.strip();
+        chn_def_str += "\n";
+    return chn_def_str;
 
 def readfile(fname):
     file_object = open(fname)
@@ -52,8 +55,11 @@ def get_soup(data):
 
 def print_string(x):
     print (x.string.strip());
+    return x.string.strip();
 
 def print_mnemonics(mnemonics):
+    mnc_str = "";
+    mnc_str += '------------------mnemonics-----------------\n';
     print ('------------------mnemonics-----------------');
     limit = 0;
     for i_cursor in mnemonics:
@@ -61,12 +67,15 @@ def print_mnemonics(mnemonics):
         if limit > 5:
             break;
         sentence = i_cursor.next_sibling;
-        print_string(sentence);
+        mnc_str += print_string(sentence) + "\n";
+        mnc_str += '>>>>>>>>>>><<<<<<<<<<\n';
         print ('>>>>>>>>>>><<<<<<<<<<');
+    return mnc_str;
 
 def show_mnc(query_word):
 
-    chinese_def(query_word);
+    chinese_def_str = chinese_def(query_word);
+    mnc_str = ""
     word_page = get_page_of_word(query_word);
     soup = get_soup(word_page);
     # texts = soup.findAll(text=True);
@@ -85,11 +94,11 @@ def show_mnc(query_word):
             # examples = link.parent.find_all('li');
             # map(lambda x: print_string(x), examples);
         elif link.string.find('Mnemonics (Memory Aids) for') is not -1:
-            print_mnemonics(link.parent.find_all('i','icon-lightbulb'));
+            mnc_str = print_mnemonics(link.parent.find_all('i','icon-lightbulb'));
             pass;
         else:
             pass;
-
+    return chinese_def_str, mnc_str;
 
 def main():
     query_word = sys.argv[1];

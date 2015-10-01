@@ -6,24 +6,35 @@ import mnemonic as mnc
 import datetime
 import os
 
+def show_def(word):
+    if vcb_db.is_def_in_db(word):
+        chn_def, mnc_def = vcb_db.get_word_def_from_db(word);
+        print (word + ":");
+        print (chn_def + mnc_def);
+    else:
+        mnc.show_mnc(word);
+
 def do_remember(word, word_time):
     last_remember = datetime.datetime.fromtimestamp(word_time).strftime('%m-%d %H:%M:%S');
     review_cnt = vcb_db.get_word_review_cnt(word);
     print("");
     print("---------------------")
-    print (">>" +last_remember + "(" + str(review_cnt) + ")" + ":" + word);
     while True:
-        is_remember = raw_input();
+        is_remember = raw_input(">>" +last_remember + "(" +
+                                str(review_cnt) + ")" + " " + word + ":").strip();
         if is_remember == 'y':
             return True;
         elif is_remember == 'n':
             return False;
         elif is_remember == 's':
-            mnc.show_mnc(word);
+            show_def(word);
             continue;
         elif is_remember == 'b':
             vcb_db.ban_this_word(word);
             return True;
+        elif is_remember == '':
+            os.system('clear');
+            continue;
         else:
             print ("input error");
 
@@ -73,7 +84,7 @@ def review_mode(lst_num=None):
             remember_act(words_queue, word);
         else:
             not_remember_act(words_queue, word);
-        mnc.show_mnc(word);
+        show_def(word);
         print ("rest: ~ " + str(turn_rest));
 
 
@@ -88,8 +99,14 @@ def insert_mode():
         if word == 'ou':
             break;
         vcb_db.insert_word(word, nlist);
-        mnc.show_mnc(word);
+        show_def(word);
 
+def update_word_def():
+    words_arr = vcb_db.get_all_words();
+    for word in words_arr:
+        chn_def, mnc_def = mnc.show_mnc(word);
+        vcb_db.update_word_def(word, chn_def, mnc_def);
+    pass;
 
 # funciton start here
 choice = raw_input("please choose the working mode:\nr:review.\ni:insert\nm:domore\n")
@@ -100,5 +117,7 @@ elif choice == 'i':
 elif choice == 'lr':
     lst_num = raw_input("please input the list id:");
     review_mode(lst_num);
+elif choice == 'update':
+    update_word_def();
 else:
     print ("error input");
