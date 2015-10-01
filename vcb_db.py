@@ -14,9 +14,9 @@ conn = sqlite3.connect('vcb_data.db')
 conn.isolation_level = None
 cursor = conn.cursor()
 
-remember_interval = [15, 300, 12600, 100800, 100800*2, 100800*3, 100800 * 5, 100800 * 7, 100800 * 7];
+remember_interval = [15, 300, 12 * 3600, 24 * 3600, 2 * 24 * 3600, 4 * 24 * 3600, 7 * 24 * 3600, 15 * 24 * 3600];
 remember_max = 8;
-shuffle_group = 7;
+shuffle_group = 20;
 # print("opened");
 
 # def get_all_words():
