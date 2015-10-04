@@ -78,7 +78,7 @@ def review_mode(lst_num=None):
     do_review(words_queue);
 
 def challenge_mode():
-    words_queue = vcb_db.get_need_words_queue(None,40);
+    words_queue = vcb_db.get_need_words_queue(None,20);
     do_review(words_queue);
 
 
@@ -125,7 +125,7 @@ def update_word_def():
     pass;
 
 # funciton start here
-choice = raw_input("please choose the working mode:\nr:review.\ni:insert\nm:domore\nc:challenge-Mode(40)\n")
+choice = raw_input("please choose the working mode:\nr:review.\ni:insert\nm:domore\nc:challenge-Mode(20)\n")
 if choice == 'r':
     review_mode();
 elif choice == 'i':
