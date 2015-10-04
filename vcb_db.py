@@ -89,14 +89,11 @@ def get_need_words_queue(thelist=None,nGroup=500):
         if last_know + remember_interval[n_remember] <= now_time:
             words_que.append((word[0], last_know + remember_interval[n_remember]));
 
-        if len(words_que) >= nGroup:
-            break;
-
     rtn_que = sorted(words_que, key = lambda x: x[1]);
 
     rtn_que = group_shuffle(rtn_que);
 
-    return rtn_que;
+    return rtn_que[0:nGroup];
 
 def get_word_review_cnt(word):
     cursor.execute("select review_cnt from words where word = ?", [word]);
