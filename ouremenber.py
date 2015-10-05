@@ -125,6 +125,8 @@ def update_word_def():
     pass;
 
 # funciton start here
+words_in_queue = vcb_db.get_inqueue_number();
+print ("words in queue:" + str(words_in_queue));
 choice = raw_input("please choose the working mode:\nr:review.\ni:insert\nm:domore\nc:challenge-Mode(20)\n")
 if choice == 'r':
     review_mode();
@@ -137,5 +139,7 @@ elif choice == 'update':
     update_word_def();
 elif choice == 'c':
     challenge_mode();
+elif choice == 'e':
+    vcb_db.enable_word(300);
 else:
     print ("error input");

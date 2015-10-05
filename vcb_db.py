@@ -15,8 +15,14 @@ conn.isolation_level = None
 cursor = conn.cursor()
 
 remember_interval = [15, 300, 12 * 3600, 24 * 3600, 2 * 24 * 3600, 4 * 24 * 3600, 7 * 24 * 3600, 15 * 24 * 3600];
-remember_max = 8;
+remember_max = 7;
 shuffle_group = 20;
+
+# 单词队列状态
+WORD_STATUS_NOT_IN_QUEUE = 0;
+WORD_STATUS_IN_QUEUE = 1;
+WORD_STATUS_KNOWN = 2;
+
 # print("opened");
 
 # def get_all_words():
@@ -63,7 +69,7 @@ def update_word_def(word, chn_def, mnc_def):
         return False;
 
 def is_def_in_db(word):
-    rtn = cursor.execute("select count(*) AS rtn from chn;");
+    rtn = cursor.execute("select count(*) AS rtn from chn;").fetchone()[0];
     if rtn > 0:
         return True;
     else:
@@ -77,12 +83,12 @@ def get_word_def_from_db(word):
 def get_need_words_queue(thelist=None,nGroup=500):
     words_que = [];
     if thelist == None:
-        words = cursor.execute("select *  from words;");
+        words = cursor.execute("select *  from words where status = ?;", [WORD_STATUS_IN_QUEUE]);
     else:
-        words = cursor.execute("select * from words where list = ?", [thelist]);
+        words = cursor.execute("select * from words where list = ? and status = ?", [thelist, WORD_STATUS_IN_QUEUE]);
     now_time = int(time.time());
     for word in words:
-        n_remember = word[1];
+        n_remember = min(word[1], remember_max);
         last_know = word[2];
         if n_remember == remember_max:
             continue;
@@ -106,10 +112,14 @@ def get_word_review_cnt(word):
 def remember_word(word):
     now_time = int(time.time());
     try:
-        cursor.execute("UPDATE words SET review_cnt = min(review_cnt + 1, 8), last_know = ? WHERE word = ?;", [now_time, word]);
+        cursor.execute("UPDATE words SET review_cnt = min(review_cnt + 1, ?), last_know = ? WHERE word = ?;",
+                       [remember_max, now_time, word]
+        );
         cursor.execute("select review_cnt from words where word = ?", [word]);
-        review_cnt = cursor.fetchone()[0];
         conn.commit();
+        review_cnt = cursor.fetchone()[0];
+        if review_cnt == remember_max:
+            ban_this_word(word);
         return (word, remember_interval[review_cnt] + int(time.time()));
     except sqlite3.Error as e:
         print ("sql error", e.args[0]);
@@ -118,7 +128,7 @@ def remember_word(word):
 def ban_this_word(word):
     now_time = int(time.time());
     try:
-        cursor.execute("UPDATE words SET review_cnt = 8, last_know = ? WHERE word = ?;", [now_time, word]);
+        cursor.execute("UPDATE words SET status = ?, last_know = ? WHERE word = ?;", [WORD_STATUS_KNOWN, now_time, word]);
         cursor.execute("select review_cnt from words where word = ?", [word]);
         review_cnt = cursor.fetchone()[0];
         conn.commit();
@@ -141,7 +151,7 @@ def not_remember_word(word):
 
 
 def insert_word(word, list_number):
-    word_data = (word, 0, int(time.time()), list_number, 0);
+    word_data = (word, 0, int(time.time()), list_number, WORD_STATUS_IN_QUEUE);
     try:
         cursor.execute("INSERT INTO words VALUES (?,?,?,?,?)", word_data);
         conn.commit();
@@ -150,7 +160,13 @@ def insert_word(word, list_number):
         print ("sql error:", e.args[0]);
         return False;
 
+def enable_word(count = 20):
+    cursor.execute("UPDATE words SET status = ? WHERE status = ? LIMIT ?;", [WORD_STATUS_IN_QUEUE, WORD_STATUS_NOT_IN_QUEUE, count]);
+    conn.commit();
 
+def get_inqueue_number():
+    rtn = cursor.execute("select count(*) AS rtn from words where status = ?;", [WORD_STATUS_IN_QUEUE]).fetchone()[0];
+    return rtn;
 
 # data = get_need_words_queue();
 # word = raw_input();
