@@ -6,6 +6,7 @@ import mnemonic as mnc
 import datetime
 import os
 import sys
+import getch
 
 # to use utf-8 decode
 reload(sys)
@@ -28,21 +29,24 @@ def do_remember(word, word_time):
     print("");
     print("---------------------")
     while True:
-        is_remember = raw_input(">>" +last_remember + "(" +
-                                str(review_cnt) + ")" + " " + word + ":").strip();
-        if is_remember == 'y':
+        print (">>" +last_remember + "(" +
+                                str(review_cnt) + ")" + " " + word + ":");
+        is_remember = getch.getch();
+        if is_remember == 'u':  # yes
             return True;
-        elif is_remember == 'n':
+        elif is_remember == 'i': # no
             return False;
-        elif is_remember == 's':
+        elif is_remember == 'j': # show
             show_def(word);
             continue;
-        elif is_remember == 'b':
+        elif is_remember == 'b': # ban
             vcb_db.ban_this_word(word);
             return True;
-        elif is_remember == '':
+        elif is_remember == 'k': # clear
             os.system('clear');
             continue;
+        elif is_remember == 'q': # quit
+            exit(0);
         else:
             print ("input error");
 
