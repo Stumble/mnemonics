@@ -144,6 +144,7 @@ elif choice == 'update':
 elif choice == 'c':
     challenge_mode();
 elif choice == 'e':
-    vcb_db.enable_word(300);
+    enable_number = raw_input("please input the number of words you want to fuck today:");
+    vcb_db.enable_word(int(enable_number));
 else:
     print ("error input");
