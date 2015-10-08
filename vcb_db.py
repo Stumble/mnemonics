@@ -69,8 +69,8 @@ def update_word_def(word, chn_def, mnc_def):
         return False;
 
 def is_def_in_db(word):
-    rtn = cursor.execute("select count(*) AS rtn from chn;").fetchone()[0];
-    if rtn > 0:
+    rtn = cursor.execute("select count(*) AS rtn from chn where word = ?;",[word]).fetchone()[0];
+    if rtn == 1:
         return True;
     else:
         return False;

@@ -124,6 +124,9 @@ def insert_mode():
 def update_word_def():
     words_arr = vcb_db.get_all_words();
     for word in words_arr:
+        if vcb_db.is_def_in_db(word):
+            continue;
+        print (word);
         chn_def, mnc_def = mnc.show_mnc(word);
         vcb_db.update_word_def(word, chn_def, mnc_def);
     pass;
