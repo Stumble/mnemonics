@@ -27,6 +27,8 @@ def chinese_def(word):
     if len(trans_div) <= 0:
         return False;
     for trans in trans_div[0].findAll("li"):
+        if trans.string == None:
+            continue;
         print (trans.string);
         chn_def_str += trans.string.strip();
         chn_def_str += "\n";
