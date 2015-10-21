@@ -21,7 +21,8 @@ def show_def(word):
         print (chn_def);
         print (mnc_def);
     else:
-        mnc.show_mnc(word);
+        chn_def, mnc_def = mnc.show_mnc(word);
+        vcb_db.update_word_def(word, chn_def, mnc_def);
 
 def do_remember(word, word_time):
     last_remember = datetime.datetime.fromtimestamp(word_time).strftime('%m-%d %H:%M:%S');
