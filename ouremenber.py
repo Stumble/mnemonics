@@ -132,6 +132,9 @@ def update_word_def():
         vcb_db.update_word_def(word, chn_def, mnc_def);
     pass;
 
+def spelling_closest(word):
+    words_arr = vcb_db.get_all_words();
+
 # funciton start here
 words_in_queue = vcb_db.get_inqueue_number();
 print ("words in queue:" + str(words_in_queue));
