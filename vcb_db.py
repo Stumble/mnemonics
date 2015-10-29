@@ -158,7 +158,15 @@ def insert_word(word, list_number):
         return True;
     except sqlite3.Error as e:
         print ("sql error:", e.args[0]);
+        re_enable_single_word(word, list_number);
         return False;
+
+def re_enable_single_word(word, list_number):
+    try:
+        cursor.execute("UPDATE words SET status = ?, list = ? WHERE word = ?;", [WORD_STATUS_IN_QUEUE, list_number, word]);
+        conn.commit();
+    except sqlite3.Error as e:
+        print ("sql error:", e.args[0]);
 
 def enable_word(count = 20):
     cursor.execute("UPDATE words SET status = ? WHERE status = ? LIMIT ?;", [WORD_STATUS_IN_QUEUE, WORD_STATUS_NOT_IN_QUEUE, count]);
