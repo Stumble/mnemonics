@@ -81,7 +81,7 @@ def show_mnc(query_word):
 
     # skip if it is not a single word
     if query_word.count(" ") > 0:
-        mnc_str = "/* it's not a single word.";
+        mnc_str = "/* it's not a single word.*/";
         return chinese_def_str, mnc_str;
 
     word_page = get_page_of_word(query_word);

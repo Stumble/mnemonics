@@ -24,9 +24,11 @@ def show_def(word):
         print (mnc_def);
     else:
         chn_def, mnc_def = mnc.show_mnc(word);
-        vcb_db.update_word_def(word, chn_def, mnc_def);
-    if chn_def == "":
+
+        if chn_def == "":
         chn_def = raw_input("no Chinese meaning, please input one: ");
+
+        vcb_db.update_word_def(word, chn_def, mnc_def);
 
 def do_remember(word, word_time):
     last_remember = datetime.datetime.fromtimestamp(word_time).strftime('%m-%d %H:%M:%S');
