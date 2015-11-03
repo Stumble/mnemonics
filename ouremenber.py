@@ -26,7 +26,7 @@ def show_def(word):
         chn_def, mnc_def = mnc.show_mnc(word);
 
         if chn_def == "":
-        chn_def = raw_input("no Chinese meaning, please input one: ");
+            chn_def = raw_input("no Chinese meaning, please input one: ");
 
         vcb_db.update_word_def(word, chn_def, mnc_def);
 
