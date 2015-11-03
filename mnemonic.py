@@ -78,6 +78,12 @@ def show_mnc(query_word):
 
     chinese_def_str = chinese_def(query_word);
     mnc_str = ""
+
+    # skip if it is not a single word
+    if query_word.count(" ") > 0:
+        mnc_str = "/* it's not a single word.";
+        return chinese_def_str, mnc_str;
+
     word_page = get_page_of_word(query_word);
     soup = get_soup(word_page);
     # texts = soup.findAll(text=True);
