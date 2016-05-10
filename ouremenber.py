@@ -14,6 +14,8 @@ sys.setdefaultencoding('utf-8')
 
 
 def show_def(word):
+    chn_def = ""
+    mnc_def = ""
     if vcb_db.is_def_in_db(word):
         chn_def, mnc_def = vcb_db.get_word_def_from_db(word)
         print(word + ":")
@@ -22,6 +24,10 @@ def show_def(word):
         print(mnc_def)
     else:
         chn_def, mnc_def = mnc.show_mnc(word)
+
+        if chn_def == "":
+            chn_def = raw_input("no Chinese meaning, please input one: ")
+
         vcb_db.update_word_def(word, chn_def, mnc_def)
 
 

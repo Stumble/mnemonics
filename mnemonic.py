@@ -85,6 +85,12 @@ def show_mnc(query_word):
 
     chinese_def_str = chinese_def(query_word)
     mnc_str = ""
+
+    # skip if it is not a single word
+    if query_word.count(" ") > 0:
+        mnc_str = "/* it's not a single word.*/"
+        return chinese_def_str, mnc_str
+
     word_page = get_page_of_word(query_word)
     soup = get_soup(word_page)
     # texts = soup.findAll(text=True);
@@ -103,9 +109,8 @@ def show_mnc(query_word):
             # examples = link.parent.find_all('li');
             # map(lambda x: print_string(x), examples);
         elif link.string.find('Mnemonics (Memory Aids) for') is not -1:
-            mnc_str = print_mnemonics(
-                link.parent.find_all('i', 'icon-lightbulb')
-            )
+            mnc_str = print_mnemonics(link.parent.find_all('i',
+                                                           'icon-lightbulb'))
             pass
         else:
             pass
