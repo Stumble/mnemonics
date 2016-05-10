@@ -6,7 +6,7 @@ import mnemonic as mnc
 import datetime
 import os
 import sys
-import getch
+from libs import getch
 
 # to use utf-8 decode
 reload(sys)
